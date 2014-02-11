@@ -5,7 +5,7 @@
  *      Author: jieshen
  */
 
-#include "eye_llc.hpp"
+#include "EYE/eye_llc.hpp"
 
 #include <mkl.h>
 

@@ -8,8 +8,8 @@
 #ifndef __EYE_EYE_HPP__
 #define __EYE_EYE_HPP__
 
-#include "eye_codebook.hpp"
-#include "eye_dsift.hpp"
-#include "eye_llc.hpp"
+#include "EYE/eye_codebook.hpp"
+#include "EYE/eye_dsift.hpp"
+#include "EYE/eye_llc.hpp"
 
 #endif /* __EYE_EYE_HPP__ */

@@ -5,7 +5,7 @@
  *      Author: jieshen
  */
 
-#include "eye_codebook.hpp"
+#include "EYE/eye_codebook.hpp"
 
 #include <vl/kmeans.h>
 

@@ -5,9 +5,9 @@ SRC = Split('''
             src/eye_llc.cpp
             src/eye_codebook.cpp
             src/eye_dsift.cpp
-            src/test.cpp
-            src/main.cpp
             ''')
+
+SRC_TEST = [SRC, 'test.cpp', 'main.cpp']
 
 
 INCLUDE_PATH = Split('''./include
@@ -33,4 +33,5 @@ env = Environment(LIBPATH=LIB_PATH, LIBS=_LIBS, CPPPATH=INCLUDE_PATH, LINKFLAGS=
 env.ParseConfig('pkg-config --cflags --libs opencv');
 
 env.StaticLibrary(target='EYE', source=SRC)
-env.Program(target='EYE.bin', source=SRC)
+env.SharedLibrary(target='EYE', source=SRC)
+env.Program(target='EYE.bin', source=SRC_TEST)

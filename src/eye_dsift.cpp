@@ -5,7 +5,7 @@
  *      Author: jieshen
  */
 
-#include "EYE.hpp"
+#include "EYE/eye_dsift.hpp"
 
 #include <vl/imopv.h>
 
