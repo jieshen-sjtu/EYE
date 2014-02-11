@@ -11,3 +11,11 @@
 *.lai
 *.la
 *.a
+
+data/
+*.bin
+*tmp*
+*.jpg
+*.txt
+
+*project
