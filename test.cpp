@@ -169,7 +169,7 @@ namespace EYE
 
     cerr << "init model done" << endl;
 
-    llc_model.Encoder(X, dim, num_samples, code);
+    llc_model.Encode_with_max_pooling(X, dim, num_samples, code);
 
     cerr << "encode done" << endl;
 

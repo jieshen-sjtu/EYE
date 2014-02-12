@@ -17,5 +17,6 @@ data/
 *tmp*
 *.jpg
 *.txt
+*.bak
 
 *project

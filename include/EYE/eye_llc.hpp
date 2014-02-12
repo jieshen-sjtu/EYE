@@ -23,7 +23,7 @@ namespace EYE
   public:
     LLC();
     LLC(const shared_ptr<float>& base, const uint32_t dim,
-                const uint32_t num_base);
+        const uint32_t num_base);
     ~LLC();
 
     // must call this function before encoder!!!
@@ -31,8 +31,11 @@ namespace EYE
     void Clear();
 
   public:
-    void Encoder(const shared_ptr<float>& X, const uint32_t dim,
-                 const uint32_t num_frame, shared_ptr<float>& codes);
+    void Encode(const shared_ptr<float>& X, const uint32_t dim,
+                const uint32_t num_frame, shared_ptr<float>& codes);
+    void Encode_with_max_pooling(const shared_ptr<float>& X, const uint32_t dim,
+                                 const uint32_t num_frame,
+                                 shared_ptr<float>& codes);
 
   private:
     void init_with_default_parameter();
@@ -88,7 +91,7 @@ namespace EYE
 
     inline const float* get_base() const
     {
-      return base_;
+      return base_.get();
     }
     inline const uint32_t get_dim() const
     {
@@ -134,7 +137,7 @@ namespace EYE
 
   private:
     // base data
-    float* base_; // the actual base, get from shared_ptr
+    shared_ptr<float> base_; // the actual base, get from shared_ptr
     uint32_t dim_;
     uint32_t num_base_;
 
