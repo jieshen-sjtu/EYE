@@ -31,7 +31,7 @@ namespace EYE
 
   public:
     void SetUp();
-    void Extract(const shared_ptr<float>& gray_img, const uint32_t width,
+    void Extract(const float* gray_img, const uint32_t width,
                  const uint32_t height, vector<VlDsiftKeypoint>* frames,
                  vector<float>* descrs, uint32_t* dim);
     void Clear();

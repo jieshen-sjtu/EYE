@@ -181,10 +181,8 @@ namespace EYE
     free(b);
   }
 
-  void LLC::Encode(const shared_ptr<float>& X,
-                                    const uint32_t dim,
-                                    const uint32_t num_frame,
-                                    shared_ptr<float>& codes)
+  void LLC::Encode(const shared_ptr<float>& X, const uint32_t dim,
+                   const uint32_t num_frame, shared_ptr<float>& codes)
   {
     const float* data = X.get();
     if (data == NULL || dim != dim_ || num_frame <= 0)

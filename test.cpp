@@ -69,9 +69,11 @@ namespace EYE
     cv::Mat img = cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
     img.convertTo(img, CV_32FC1);
 
+    /*
     float* data_ = (float*) malloc(sizeof(float) * img.rows * img.cols);
     memcpy(data_, img.data, sizeof(float) * img.rows * img.cols);
     shared_ptr<float> data(data_);
+    */
 
     cerr << "data copy done" << endl;
 
@@ -88,12 +90,12 @@ namespace EYE
     ofstream output("data/eye_imgdata.txt");
     for (int i = 0; i < width * height; ++i)
     {
-      output << data.get()[i] << " ";
+      output << img.data[i] << " ";
       if ((i + 1) % width == 0)
         output << endl;
     }
 
-    dsift_model.Extract(data, width, height, &frames, &descrs, &dim);
+    dsift_model.Extract((float*)img.data, width, height, &frames, &descrs, &dim);
     cerr << frames.size() << endl;
 
     output.close();

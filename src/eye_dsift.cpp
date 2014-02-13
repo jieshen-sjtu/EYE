@@ -72,7 +72,7 @@ namespace EYE
     has_setup_ = true;
   }
 
-  void DSift::Extract(const shared_ptr<float>& gray_img, const uint32_t width,
+  void DSift::Extract(const float* gray_img, const uint32_t width,
                       const uint32_t height, vector<VlDsiftKeypoint>* frames,
                       vector<float>* descrs, uint32_t* dim)
   {
@@ -154,7 +154,7 @@ namespace EYE
       const float sigma = 1.0 * sz / magnif_;
       float* smooth_img = (float*) malloc(sizeof(float) * len_img);
       memset(smooth_img, 0, sizeof(float) * len_img);
-      vl_imsmooth_f(smooth_img, width, gray_img.get(), width, height, width,
+      vl_imsmooth_f(smooth_img, width, gray_img, width, height, width,
                     sigma, sigma);
 
       vl_dsift_process(dsift_model_, smooth_img);
