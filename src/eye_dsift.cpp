@@ -9,6 +9,8 @@
 
 #include <vl/imopv.h>
 
+#include <mkl.h>
+
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
