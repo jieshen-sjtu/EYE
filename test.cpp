@@ -19,7 +19,7 @@ namespace EYE
   {
     VlRand rand;
 
-    uint32_t numData = 10000;
+    uint32_t numData = 5000;
     uint32_t dimension = 128;
     uint32_t numCenters = 2000;
 

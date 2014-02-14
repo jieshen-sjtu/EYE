@@ -125,6 +125,12 @@ namespace EYE
       exit(-1);
     }
 
+    if (num_data < K)
+    {
+      fprintf(stderr, "number of data must be equal or greater than centers\n");
+      exit(-1);
+    }
+
     if (!has_setup_)
       SetUp();
 
