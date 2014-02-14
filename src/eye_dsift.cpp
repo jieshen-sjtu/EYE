@@ -65,10 +65,17 @@ namespace EYE
     }
   }
 
-  void DSift::SetUp()
+  void DSift::SetUp(const uint32_t width, const uint32_t height)
   {
     if (dsift_model_ != NULL)
       vl_dsift_delete(dsift_model_);
+
+    dsift_model_ = vl_dsift_new(width, height);
+
+    vl_dsift_set_steps(dsift_model_, step_, step_);
+    vl_dsift_set_window_size(dsift_model_, win_size_);
+    vl_dsift_set_flat_window(dsift_model_, fast_);
+
     has_setup_ = true;
   }
 
@@ -90,13 +97,11 @@ namespace EYE
     const uint32_t max_sz = *(std::max_element(sizes_.begin(), sizes_.end()));
     const uint32_t len_img = width * height;
 
+    if (!has_setup_)
+      SetUp(width, height);
+
     for (size_t i = 0; i < sizes_.size(); ++i)
     {
-      if (dsift_model_ != NULL)
-        vl_dsift_delete(dsift_model_);
-
-      dsift_model_ = vl_dsift_new(width, height);
-
       const uint32_t sz = sizes_[i];
 
       const int off = std::floor(1 + 1.5 * (max_sz - sz));
@@ -111,53 +116,51 @@ namespace EYE
       geom.binSizeY = sz;
       vl_dsift_set_geometry(dsift_model_, &geom);
 
-      vl_dsift_set_steps(dsift_model_, step_, step_);
-      vl_dsift_set_window_size(dsift_model_, win_size_);
-      vl_dsift_set_flat_window(dsift_model_, fast_);
-
       /*
-      {
-        int stepX;
-        int stepY;
-        int minX;
-        int minY;
-        int maxX;
-        int maxY;
-        vl_bool useFlatWindow;
+       {
+       int stepX;
+       int stepY;
+       int minX;
+       int minY;
+       int maxX;
+       int maxY;
+       vl_bool useFlatWindow;
 
-        int numFrames = vl_dsift_get_keypoint_num(dsift_model_);
-        int descrSize = vl_dsift_get_descriptor_size(dsift_model_);
-        VlDsiftDescriptorGeometry g = *vl_dsift_get_geometry(dsift_model_);
+       int numFrames = vl_dsift_get_keypoint_num(dsift_model_);
+       int descrSize = vl_dsift_get_descriptor_size(dsift_model_);
+       VlDsiftDescriptorGeometry g = *vl_dsift_get_geometry(dsift_model_);
 
-        vl_dsift_get_steps(dsift_model_, &stepY, &stepX);
-        vl_dsift_get_bounds(dsift_model_, &minY, &minX, &maxY, &maxX);
-        useFlatWindow = vl_dsift_get_flat_window(dsift_model_);
+       vl_dsift_get_steps(dsift_model_, &stepY, &stepX);
+       vl_dsift_get_bounds(dsift_model_, &minY, &minX, &maxY, &maxX);
+       useFlatWindow = vl_dsift_get_flat_window(dsift_model_);
 
-        printf(
-            "vl_dsift: bounds:            [minX,minY,maxX,maxY] = [%d, %d, %d, %d]\n",
-            minX + 1, minY + 1, maxX + 1, maxY + 1);
-        printf("vl_dsift: subsampling steps: stepX=%d, stepY=%d\n", stepX,
-               stepY);
-        printf(
-            "vl_dsift: num bins:          [numBinT, numBinX, numBinY] = [%d, %d, %d]\n",
-            g.numBinT, g.numBinX, g.numBinY);
-        printf("vl_dsift: descriptor size:   %d\n", descrSize);
-        printf("vl_dsift: bin sizes:         [binSizeX, binSizeY] = [%d, %d]\n",
-               g.binSizeX, g.binSizeY);
-        printf("vl_dsift: flat window:       %s\n", VL_YESNO(useFlatWindow));
-        printf("vl_dsift: window size:       %g\n",
-               vl_dsift_get_window_size(dsift_model_));
-        printf("vl_dsift: num of features:   %d\n", numFrames);
-      }
-      */
+       printf(
+       "vl_dsift: bounds:            [minX,minY,maxX,maxY] = [%d, %d, %d, %d]\n",
+       minX + 1, minY + 1, maxX + 1, maxY + 1);
+       printf("vl_dsift: subsampling steps: stepX=%d, stepY=%d\n", stepX,
+       stepY);
+       printf(
+       "vl_dsift: num bins:          [numBinT, numBinX, numBinY] = [%d, %d, %d]\n",
+       g.numBinT, g.numBinX, g.numBinY);
+       printf("vl_dsift: descriptor size:   %d\n", descrSize);
+       printf("vl_dsift: bin sizes:         [binSizeX, binSizeY] = [%d, %d]\n",
+       g.binSizeX, g.binSizeY);
+       printf("vl_dsift: flat window:       %s\n", VL_YESNO(useFlatWindow));
+       printf("vl_dsift: window size:       %g\n",
+       vl_dsift_get_window_size(dsift_model_));
+       printf("vl_dsift: num of features:   %d\n", numFrames);
+       }
+       */
 
       const float sigma = 1.0 * sz / magnif_;
       float* smooth_img = (float*) malloc(sizeof(float) * len_img);
       memset(smooth_img, 0, sizeof(float) * len_img);
-      vl_imsmooth_f(smooth_img, width, gray_img, width, height, width,
-                    sigma, sigma);
+      vl_imsmooth_f(smooth_img, width, gray_img, width, height, width, sigma,
+                    sigma);
 
       vl_dsift_process(dsift_model_, smooth_img);
+
+      free(smooth_img);
 
       const int num_key_pts = vl_dsift_get_keypoint_num(dsift_model_);
       const VlDsiftKeypoint* key_points = vl_dsift_get_keypoints(dsift_model_);

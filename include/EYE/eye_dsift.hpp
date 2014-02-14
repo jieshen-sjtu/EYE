@@ -30,7 +30,7 @@ namespace EYE
     ~DSift();
 
   public:
-    void SetUp();
+    void SetUp(const uint32_t width, const uint32_t height);
     void Extract(const float* gray_img, const uint32_t width,
                  const uint32_t height, vector<VlDsiftKeypoint>* frames,
                  vector<float>* descrs, uint32_t* dim);
