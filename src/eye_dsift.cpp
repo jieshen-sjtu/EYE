@@ -168,6 +168,8 @@ namespace EYE
       const float* features = vl_dsift_get_descriptors(dsift_model_);
 
       float* f = (float*) malloc(sizeof(float) * num_key_pts * (*dim));
+      cblas_scopy(num_key_pts * (*dim), features, 1, f, 1);
+      cblas_sscal(num_key_pts * (*dim), 512.0f, f, 1);
 
       for (uint32_t d = 0; d < num_key_pts; ++d)
       {
@@ -181,7 +183,7 @@ namespace EYE
         {
           for (uint32_t j = d * (*dim); j < (d + 1) * (*dim); ++j)
           {
-            float tmp = VL_MIN(512.0 * features[j], 255.0);
+            float tmp = VL_MIN(f[j], 255.0);
             if (!float_desc_)
               tmp = (int) tmp;
             f[j] = tmp;
