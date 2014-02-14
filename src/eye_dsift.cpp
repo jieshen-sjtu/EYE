@@ -201,6 +201,8 @@ namespace EYE
         frames->insert(frames->end(), key_points, key_points + num_key_pts);
 
       descrs->insert(descrs->end(), f, f + num_key_pts * (*dim));
+
+      free(f);
     }
   }
 }
