@@ -51,6 +51,12 @@ namespace EYE
                       const uint32_t dim, const uint32_t K)
   {
     const float* clusters = cluster.get();
+    save(output, clusters, dim, K);
+  }
+
+  void CodeBook::save(FILE* output, const float* clusters, const uint32_t dim,
+                      const uint32_t K)
+  {
     if (clusters == NULL)
     {
       fprintf(stderr, "Check the clusters\n");
@@ -107,6 +113,12 @@ namespace EYE
   {
     const float* data = org_data.get();
 
+    GenKMeans(data, num_data, dim, K);
+  }
+
+  void CodeBook::GenKMeans(const float* data, const uint32_t num_data,
+                           const uint32_t dim, const uint32_t K)
+  {
     if (data == NULL)
     {
       fprintf(stderr, "NULL pointer for data\n");
@@ -116,7 +128,7 @@ namespace EYE
     if (!has_setup_)
       SetUp();
 
-// initialize centers
+    // initialize centers
     vl_kmeans_init_centers_with_rand_data(kmeans_model_, data, dim, num_data,
                                           K);
 

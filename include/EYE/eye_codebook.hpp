@@ -100,6 +100,8 @@ namespace EYE
   public:
     static void save(FILE* output, const shared_ptr<float>& clusters,
                      const uint32_t dim, const uint32_t K);
+    static void save(FILE* output, const float* clusters, const uint32_t dim,
+                     const uint32_t K);
     static void load(FILE* input, shared_ptr<float>& clusters, uint32_t* dim,
                      uint32_t* K);
 
@@ -118,6 +120,8 @@ namespace EYE
   public:
     // ensure that the clusters should be allocate the memory outside
     void GenKMeans(const shared_ptr<float>& data, const uint32_t num_data,
+                   const uint32_t dim, const uint32_t K);
+    void GenKMeans(const float* data, const uint32_t num_data,
                    const uint32_t dim, const uint32_t K);
   };
 }
