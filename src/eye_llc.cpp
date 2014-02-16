@@ -85,7 +85,7 @@ namespace EYE
   void LLC::Encode_with_max_pooling(const float* const data,
                                     const uint32_t dim,
                                     const uint32_t num_frame,
-                                    shared_ptr<float>& codes) const
+                                    shared_ptr<float>* const codes) const
   {
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
@@ -183,7 +183,7 @@ namespace EYE
       }
     }
 
-    codes.reset(code);
+    codes->reset(code);
 
     free(index);
     free(z);
@@ -192,7 +192,7 @@ namespace EYE
   }
 
   void LLC::Encode(const float* const data, const uint32_t dim,
-                   const uint32_t num_frame, shared_ptr<float>& codes) const
+                   const uint32_t num_frame, shared_ptr<float>* const codes) const
   {
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
@@ -289,7 +289,7 @@ namespace EYE
       }
     }
 
-    codes.reset(code);
+    codes->reset(code);
 
     /*
      float* max_code = (float*) malloc(sizeof(float) * num_base_);

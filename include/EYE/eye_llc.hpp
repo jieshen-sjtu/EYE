@@ -32,10 +32,10 @@ namespace EYE
 
   public:
     void Encode(const float* const X, const uint32_t dim,
-                const uint32_t num_frame, shared_ptr<float>& codes) const;
+                const uint32_t num_frame, shared_ptr<float>* const codes) const;
     void Encode_with_max_pooling(const float* const X, const uint32_t dim,
                                  const uint32_t num_frame,
-                                 shared_ptr<float>& codes) const;
+                                 shared_ptr<float>* const codes) const;
 
   private:
     void init_with_default_parameter();
