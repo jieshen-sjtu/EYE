@@ -82,12 +82,11 @@ namespace EYE
     has_setup_ = true;
   }
 
-  void LLC::Encode_with_max_pooling(const shared_ptr<float>& X,
+  void LLC::Encode_with_max_pooling(const float* const data,
                                     const uint32_t dim,
                                     const uint32_t num_frame,
                                     shared_ptr<float>& codes) const
   {
-    const float* data = X.get();
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
       cerr << "ERROR in input data" << endl;
@@ -192,10 +191,9 @@ namespace EYE
     free(b);
   }
 
-  void LLC::Encode(const shared_ptr<float>& X, const uint32_t dim,
+  void LLC::Encode(const float* const data, const uint32_t dim,
                    const uint32_t num_frame, shared_ptr<float>& codes) const
   {
-    const float* data = X.get();
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
       cerr << "ERROR in input data" << endl;

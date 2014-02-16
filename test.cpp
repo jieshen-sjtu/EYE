@@ -162,7 +162,7 @@ namespace EYE
 
     // coding
     shared_ptr<float> base(codebook);
-    shared_ptr<float> X(features);
+    //shared_ptr<float> X(features);
     shared_ptr<float> code;
 
     EYE::LLC llc_model;
@@ -171,7 +171,7 @@ namespace EYE
 
     cerr << "init model done" << endl;
 
-    llc_model.Encode_with_max_pooling(X, dim, num_samples, code);
+    llc_model.Encode_with_max_pooling(features, dim, num_samples, code);
 
     cerr << "encode done" << endl;
 
