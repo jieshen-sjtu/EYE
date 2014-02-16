@@ -21,6 +21,8 @@ namespace EYE
       : kdforest_model_(NULL), has_setup_(false)
   {
     init_with_default_parameter();
+    dim_ = 0;
+    num_base_ = 0;
   }
 
   LLC::LLC(const shared_ptr<float>& base, const uint32_t dim,
@@ -43,7 +45,7 @@ namespace EYE
     dim_ = dim;
     num_base_ = num_base;
 
-    if (base_.get() == NULL || dim_ <= 0 || num_base_ <= 0)
+    if (base_.get() == NULL || dim_ == 0 || num_base_ == 0)
     {
       cerr << "ERROR in set_base" << endl;
       exit(-1);
@@ -61,6 +63,12 @@ namespace EYE
 
   void LLC::SetUp()
   {
+    if (base_.get() == NULL || dim_ == 0 || num_base_ == 0)
+    {
+      cerr << "ERROR: must set the base before." << endl;
+      exit(-1);
+    }
+
     if (kdforest_model_ != NULL)
       vl_kdforest_delete(kdforest_model_);
 
@@ -77,7 +85,7 @@ namespace EYE
   void LLC::Encode_with_max_pooling(const shared_ptr<float>& X,
                                     const uint32_t dim,
                                     const uint32_t num_frame,
-                                    shared_ptr<float>& codes)
+                                    shared_ptr<float>& codes) const
   {
     const float* data = X.get();
     if (data == NULL || dim != dim_ || num_frame <= 0)
@@ -87,7 +95,10 @@ namespace EYE
     }
 
     if (!has_setup_)
-      SetUp();
+    {
+      cerr << "ERROR: Must call SetUp() before." << endl;
+      exit(-1);
+    }
 
     vl_uint32* index = (vl_uint32*) vl_malloc(
         sizeof(vl_uint32) * num_knn_ * num_frame);
@@ -182,7 +193,7 @@ namespace EYE
   }
 
   void LLC::Encode(const shared_ptr<float>& X, const uint32_t dim,
-                   const uint32_t num_frame, shared_ptr<float>& codes)
+                   const uint32_t num_frame, shared_ptr<float>& codes) const
   {
     const float* data = X.get();
     if (data == NULL || dim != dim_ || num_frame <= 0)
@@ -192,7 +203,10 @@ namespace EYE
     }
 
     if (!has_setup_)
-      SetUp();
+    {
+      cerr << "ERROR: Must call SetUp() before." << endl;
+      exit(-1);
+    }
 
     vl_uint32* index = (vl_uint32*) vl_malloc(
         sizeof(vl_uint32) * num_knn_ * num_frame);
@@ -314,6 +328,10 @@ namespace EYE
       vl_kdforest_delete(kdforest_model_);
       kdforest_model_ = NULL;
     }
+
+    base_.reset();
+    dim_ = 0;
+    num_base_ = 0;
   }
 
 }
