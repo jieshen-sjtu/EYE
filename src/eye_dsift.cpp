@@ -26,7 +26,7 @@ namespace EYE
 {
 
   DSift::DSift()
-      : dsift_model_(NULL), has_setup_(false)
+      : dsift_model_(NULL), width_(0), height_(0), has_setup_(false)
   {
     init_with_default_parameter();
   }
@@ -64,6 +64,8 @@ namespace EYE
     {
       vl_dsift_delete(dsift_model_);
       dsift_model_ = NULL;
+      width_ = 0;
+      height_ = 0;
     }
   }
 
@@ -72,7 +74,9 @@ namespace EYE
     if (dsift_model_ != NULL)
       vl_dsift_delete(dsift_model_);
 
-    dsift_model_ = vl_dsift_new(width, height);
+    width_ = width;
+    height_ = height;
+    dsift_model_ = vl_dsift_new(width_, height_);
 
     vl_dsift_set_steps(dsift_model_, step_, step_);
     vl_dsift_set_window_size(dsift_model_, win_size_);
@@ -101,6 +105,14 @@ namespace EYE
 
     if (!has_setup_)
       SetUp(width, height);
+    else
+    {
+      if(width != width_ || height != height_)
+      {
+        cerr << "ERROR: Image size not matching!" << endl;
+        exit(-1);
+      }
+    }
 
     for (size_t i = 0; i < sizes_.size(); ++i)
     {

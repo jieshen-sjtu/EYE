@@ -133,6 +133,8 @@ namespace EYE
 
   private:
     VlDsiftFilter* dsift_model_;
+    uint32_t width_;
+    uint32_t height_;
 
     // param
     vector<uint32_t> sizes_;
