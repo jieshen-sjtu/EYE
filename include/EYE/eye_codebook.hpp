@@ -118,7 +118,6 @@ namespace EYE
     bool has_setup_;
 
   public:
-    // ensure that the clusters should be allocate the memory outside
     void GenKMeans(const shared_ptr<float>& data, const uint32_t num_data,
                    const uint32_t dim, const uint32_t K);
     void GenKMeans(const float* data, const uint32_t num_data,

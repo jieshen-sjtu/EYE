@@ -18,7 +18,8 @@ using std::endl;
 namespace EYE
 {
   LLC::LLC()
-      : kdforest_model_(NULL), has_setup_(false)
+      : kdforest_model_(NULL),
+        has_setup_(false)
   {
     init_with_default_parameter();
     dim_ = 0;
@@ -27,7 +28,8 @@ namespace EYE
 
   LLC::LLC(const shared_ptr<float>& base, const uint32_t dim,
            const uint32_t num_base)
-      : kdforest_model_(NULL), has_setup_(false)
+      : kdforest_model_(NULL),
+        has_setup_(false)
   {
     init_with_default_parameter();
     set_base(base, dim, num_base);
@@ -82,10 +84,9 @@ namespace EYE
     has_setup_ = true;
   }
 
-  void LLC::Encode_with_max_pooling(const float* const data,
-                                    const uint32_t dim,
+  void LLC::Encode_with_max_pooling(const float* const data, const uint32_t dim,
                                     const uint32_t num_frame,
-                                    shared_ptr<float>* const codes) const
+                                    float* const code) const
   {
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
@@ -109,7 +110,6 @@ namespace EYE
 
     // start to encode
     const uint32_t len_code = num_base_;
-    float* code = (float*) malloc(sizeof(float) * len_code);
     memset(code, 0, sizeof(float) * len_code);
 
     const uint32_t len_z = dim_ * num_knn_;
@@ -183,16 +183,27 @@ namespace EYE
       }
     }
 
-    codes->reset(code);
-
     free(index);
     free(z);
     free(C);
     free(b);
   }
 
+  void LLC::Encode_with_max_pooling(const float* const data, const uint32_t dim,
+                                    const uint32_t num_frame,
+                                    shared_ptr<float>* const codes) const
+  {
+    // start to encode
+    const uint32_t len_code = num_base_;
+    float* code = (float*) malloc(sizeof(float) * len_code);
+    Encode_with_max_pooling(data, dim, num_frame, code);
+
+    codes->reset(code);
+  }
+
   void LLC::Encode(const float* const data, const uint32_t dim,
-                   const uint32_t num_frame, shared_ptr<float>* const codes) const
+                   const uint32_t num_frame,
+                   float* const code) const
   {
     if (data == NULL || dim != dim_ || num_frame <= 0)
     {
@@ -216,7 +227,6 @@ namespace EYE
 
     // start to encode
     const uint32_t len_code = num_base_ * num_frame;
-    float* code = (float*) malloc(sizeof(float) * len_code);
     memset(code, 0, sizeof(float) * len_code);
 
     const uint32_t len_z = dim_ * num_knn_;
@@ -289,8 +299,6 @@ namespace EYE
       }
     }
 
-    codes->reset(code);
-
     /*
      float* max_code = (float*) malloc(sizeof(float) * num_base_);
      memset(max_code, 0, sizeof(float) * num_base_);
@@ -307,6 +315,18 @@ namespace EYE
     free(z);
     free(C);
     free(b);
+  }
+
+  void LLC::Encode(const float* const data, const uint32_t dim,
+                   const uint32_t num_frame,
+                   shared_ptr<float>* const codes) const
+  {
+    // start to encode
+    const uint32_t len_code = num_base_ * num_frame;
+    float* code = (float*) malloc(sizeof(float) * len_code);
+
+    Encode(data, dim, num_frame, code);
+    codes->reset(code);
   }
 
   void LLC::init_with_default_parameter()
