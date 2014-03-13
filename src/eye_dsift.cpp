@@ -26,7 +26,10 @@ namespace EYE
 {
 
   DSift::DSift()
-      : dsift_model_(NULL), width_(0), height_(0), has_setup_(false)
+      : dsift_model_(NULL),
+        width_(0),
+        height_(0),
+        has_setup_(false)
   {
     init_with_default_parameter();
   }
@@ -56,6 +59,11 @@ namespace EYE
     magnif_ = DEFAULT_MAGNIF;
     win_size_ = DEFAULT_WIN_SIZE;
     contr_thrd_ = DEFAULT_CONTR_THRD;
+
+    bound_minx_ = DEFAULT_BOUND_MINX;
+    bound_miny_ = DEFAULT_BOUND_MINY;
+    bound_maxx_ = DEFAULT_BOUND_MAXX;
+    bound_maxy_ = DEFAULT_BOUND_MAXY;
   }
 
   void DSift::clear_data()
@@ -107,7 +115,7 @@ namespace EYE
       SetUp(width, height);
     else
     {
-      if(width != width_ || height != height_)
+      if (width != width_ || height != height_)
       {
         cerr << "ERROR: Image size not matching!" << endl;
         exit(-1);
@@ -118,9 +126,11 @@ namespace EYE
     {
       const uint32_t sz = sizes_[i];
 
-      const int off = std::floor(1 + 1.5 * (max_sz - sz));
-      vl_dsift_set_bounds(dsift_model_, std::max(0, off - 1),
-                          std::max(0, off - 1), width - 1, height - 1);
+      const int off = std::floor(1.5 * (max_sz - sz));
+      vl_dsift_set_bounds(dsift_model_, bound_minx_ + std::max(0, off),
+                          bound_miny_ + std::max(0, off),
+                          std::min((int) width - 1, bound_maxx_),
+                          std::min((int) height - 1, bound_maxy_));
 
       VlDsiftDescriptorGeometry geom;
       geom.numBinX = DEFAULT_NUM_BIN_X;

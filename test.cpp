@@ -70,10 +70,10 @@ namespace EYE
     img.convertTo(img, CV_32FC1);
 
     /*
-    float* data_ = (float*) malloc(sizeof(float) * img.rows * img.cols);
-    memcpy(data_, img.data, sizeof(float) * img.rows * img.cols);
-    shared_ptr<float> data(data_);
-    */
+     float* data_ = (float*) malloc(sizeof(float) * img.rows * img.cols);
+     memcpy(data_, img.data, sizeof(float) * img.rows * img.cols);
+     shared_ptr<float> data(data_);
+     */
 
     cerr << "data copy done" << endl;
 
@@ -95,8 +95,10 @@ namespace EYE
         output << endl;
     }
 
-    dsift_model.Extract((float*)img.data, width, height, &frames, &descrs, &dim);
-    cerr << frames.size() << endl;
+    dsift_model.Extract((float*) img.data, width, height, &frames, &descrs,
+                        &dim);
+    cerr << "frame size: " << frames.size() << endl;
+    cerr << "descr size: " << descrs.size() / dim << endl;
 
     output.close();
     output.open("data/eye_dsiftfeature.txt");
