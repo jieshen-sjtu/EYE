@@ -43,27 +43,27 @@ namespace EYE
       {
         return sizes_;
       }
-      inline const bool get_fast() const
+      inline bool get_fast() const
       {
         return fast_;
       }
-      inline const uint32_t get_step() const
+      inline uint32_t get_step() const
       {
         return step_;
       }
-      inline const bool get_float_desc() const
+      inline bool get_float_desc() const
       {
         return float_desc_;
       }
-      inline const float get_magnif() const
+      inline float get_magnif() const
       {
         return magnif_;
       }
-      inline const float get_win_size() const
+      inline float get_win_size() const
       {
         return win_size_;
       }
-      inline const float get_contr_thrd() const
+      inline float get_contr_thrd() const
       {
         return contr_thrd_;
       }

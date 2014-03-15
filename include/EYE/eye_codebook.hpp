@@ -79,19 +79,19 @@ namespace EYE
         return NULL;
       return ((const float*) vl_kmeans_get_centers(kmeans_model_));
     }
-    inline const uint32_t get_max_iter() const
+    inline uint32_t get_max_iter() const
     {
       return max_iter_;
     }
-    inline const uint32_t get_num_kdtrees() const
+    inline uint32_t get_num_kdtrees() const
     {
       return num_kdtrees_;
     }
-    inline const uint32_t get_max_comp() const
+    inline uint32_t get_max_comp() const
     {
       return max_comp_;
     }
-    inline const VlVectorComparisonType get_dist_type() const
+    inline VlVectorComparisonType get_dist_type() const
     {
       return dist_type_;
     }

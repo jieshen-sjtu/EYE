@@ -40,8 +40,7 @@ namespace EYE
 
       // !Note: Must allocate memory outside before calling these two
       void Encode(const float* const data, const uint32_t dim,
-                  const uint32_t num_frame,
-                  float* const codes) const;
+                  const uint32_t num_frame, float* const codes) const;
       void Encode_with_max_pooling(const float* const data, const uint32_t dim,
                                    const uint32_t num_frame,
                                    float* const codes) const;
@@ -102,35 +101,35 @@ namespace EYE
       {
         return base_.get();
       }
-      inline const uint32_t get_dim() const
+      inline uint32_t get_dim() const
       {
         return dim_;
       }
-      inline const uint32_t get_num_base() const
+      inline uint32_t get_num_base() const
       {
         return num_base_;
       }
-      inline const VlKDTreeThresholdingMethod get_thrd_method() const
+      inline VlKDTreeThresholdingMethod get_thrd_method() const
       {
         return thrd_method_;
       }
-      inline const VlVectorComparisonType get_dist_method() const
+      inline VlVectorComparisonType get_dist_method() const
       {
         return dist_method_;
       }
-      inline const uint32_t get_num_tree() const
+      inline uint32_t get_num_tree() const
       {
         return num_tree_;
       }
-      inline const uint32_t get_num_knn() const
+      inline uint32_t get_num_knn() const
       {
         return num_knn_;
       }
-      inline const uint32_t get_max_comp() const
+      inline uint32_t get_max_comp() const
       {
         return max_comp_;
       }
-      inline const float get_beta() const
+      inline float get_beta() const
       {
         return beta_;
       }
