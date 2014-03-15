@@ -75,6 +75,36 @@ namespace EYE
         *maxy = bound_maxy_;
       }
 
+      // aux data
+      inline const vector<uint32_t>& get_off() const
+      {
+        return off_;
+      }
+      inline const vector<int>& get_start_x() const
+      {
+        return start_x_;
+      }
+      inline const vector<int>& get_start_y() const
+      {
+        return start_y_;
+      }
+      inline const vector<int>& get_end_x() const
+      {
+        return end_x_;
+      }
+      inline const vector<int>& get_end_y() const
+      {
+        return end_y_;
+      }
+      inline const vector<uint32_t>& get_num_patches() const
+      {
+        return num_patches_;
+      }
+      inline uint32_t get_total_num_patches() const
+      {
+        return total_num_patches_;
+      }
+
       inline void set_sizes(const vector<uint32_t>& sizes)
       {
         sizes_.assign(sizes.begin(), sizes.end());
@@ -180,6 +210,16 @@ namespace EYE
       int bound_maxy_;
 
       bool has_setup_;
+
+      // aux data
+     private:
+      vector<uint32_t> off_;
+      vector<int> start_x_;
+      vector<int> start_y_;
+      vector<int> end_x_;
+      vector<int> end_y_;
+      vector<uint32_t> num_patches_;
+      uint32_t total_num_patches_;
   };
 
 }

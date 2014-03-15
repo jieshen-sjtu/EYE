@@ -29,7 +29,8 @@ namespace EYE
       : dsift_model_(NULL),
         width_(0),
         height_(0),
-        has_setup_(false)
+        has_setup_(false),
+        total_num_patches_(0)
   {
     init_with_default_parameter();
   }
@@ -89,6 +90,34 @@ namespace EYE
     vl_dsift_set_steps(dsift_model_, step_, step_);
     vl_dsift_set_window_size(dsift_model_, win_size_);
     vl_dsift_set_flat_window(dsift_model_, fast_);
+
+    // set the aux data
+    const int num_sz = sizes_.size();
+    off_.resize(num_sz, 0);
+    start_x_.resize(num_sz, 0);
+    start_y_.resize(num_sz, 0);
+    end_x_.resize(num_sz, 0);
+    end_y_.resize(num_sz, 0);
+    num_patches_.resize(num_sz, 0);
+
+    total_num_patches_ = 0;
+    const uint32_t max_sz = *(std::max_element(sizes_.begin(), sizes_.end()));
+    for (int i = 0; i < num_sz; ++i)
+    {
+      const uint32_t sz = sizes_[i];
+      off_[i] = std::floor(1.5 * (max_sz - sz));
+      start_x_[i] = off_[i] + 1.5 * sz;
+      start_y_[i] = off_[i] + 1.5 * sz;
+      end_x_[i] = width_ - 1.5 * sz;
+      end_y_[i] = height_ - 1.5 * sz;
+
+      const int num_x = std::ceil((end_x_[i] - start_x_[i]) * 1.0 / step_);
+      const int num_y = std::ceil((end_y_[i] - start_y_[i]) * 1.0 / step_);
+
+      num_patches_[i] = num_x * num_y;
+
+      total_num_patches_ += num_patches_[i];
+    }
 
     has_setup_ = true;
   }
