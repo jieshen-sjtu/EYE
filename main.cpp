@@ -13,7 +13,8 @@ int main(int argc, char* argv[])
 {
 
   cerr << "Start Testing" << endl;
-  cerr << "1. codebook" << endl << "2. dsift" << endl << "3. LLC" << endl;
+  cerr << "1. codebook" << endl << "2. dsift" << endl << "3. LLC" << endl
+       << "4. SPM" << endl;
 
   int sel(0);
   cin >> sel;
@@ -28,6 +29,9 @@ int main(int argc, char* argv[])
       break;
     case 3:
       EYE::test_llc(argc, argv);
+      break;
+    case 4:
+      EYE::test_spm(argc, argv);
       break;
     default:
       break;

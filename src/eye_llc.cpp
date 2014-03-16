@@ -195,7 +195,7 @@ namespace EYE
   {
     // start to encode
     const uint32_t len_code = num_base_;
-    float* code = (float*) malloc(sizeof(float) * len_code);
+    float* code = new float[len_code];
     Encode_with_max_pooling(data, dim, num_frame, code);
 
     codes->reset(code);
@@ -323,7 +323,7 @@ namespace EYE
   {
     // start to encode
     const uint32_t len_code = num_base_ * num_frame;
-    float* code = (float*) malloc(sizeof(float) * len_code);
+    float* code = new float[len_code];
 
     Encode(data, dim, num_frame, code);
     codes->reset(code);

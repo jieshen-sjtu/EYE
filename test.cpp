@@ -100,6 +100,12 @@ namespace EYE
     cerr << "frame size: " << frames.size() << endl;
     cerr << "descr size: " << descrs.size() / dim << endl;
 
+    cerr << "patch size:";
+    const vector<uint32_t>& num_patches = dsift_model.get_num_patches();
+    for (size_t i = 0; i < num_patches.size(); ++i)
+      cerr << " " << num_patches[i];
+    cerr << endl;
+
     output.close();
     output.open("data/eye_dsiftfeature.txt");
     for (int i = 0; i < frames.size() * dim; ++i)
@@ -183,5 +189,52 @@ namespace EYE
     for (uint32_t i = 0; i < num_center; ++i)
       output << pcode[i] << "\n";
     output.close();
+  }
+
+  void test_spm(int argc, char* argv[])
+  {
+    const int num_data = 16;
+    const int feat_dim = 2;
+    const int spm_level = 3;
+
+    float* data = new float[num_data * feat_dim];
+    float* pos = new float[num_data * 2];
+
+    for (int y = 0; y < 4; ++y)
+      for (int x = 0; x < 4; ++x)
+      {
+        const int idx = y * 4 + x;
+        pos[2 * idx] = x;
+        pos[2 * idx + 1] = y;
+
+        cout << pos[2 * idx] << " " << pos[2 * idx + 1] << endl;
+      }
+
+    for (int i = 0; i < num_data * feat_dim; ++i)
+      data[i] = i;
+    /*
+    for (int y = 0; y < 4; ++y)
+    {
+      for (int x = 0; x < 4; ++x)
+        cout << data[y * 4 + x] << " ";
+      cout << endl;
+    }*/
+
+    EYE::SPM spm_model;
+    spm_model.set_num_spm_level(spm_level);
+    spm_model.SetUp(4, 4);
+    const int out_dim = spm_model.get_total_num_blk() * feat_dim;
+
+    cout << "out dim: " << out_dim << endl;
+    float* spm_code = (float*) malloc(sizeof(float) * out_dim);
+
+    spm_model.MaxPooling(data, feat_dim, num_data, pos, spm_code);
+
+    cout << "result:" << endl;
+    for (int i = 0; i < out_dim; ++i)
+      cout << spm_code[i] << " ";
+    cout << endl;
+
+    free(spm_code);
   }
 }

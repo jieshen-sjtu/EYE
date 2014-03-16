@@ -2,6 +2,7 @@ import os
 import sys
 
 SRC = Split('''
+            src/eye_spm.cpp
             src/eye_llc.cpp
             src/eye_codebook.cpp
             src/eye_dsift.cpp
