@@ -35,9 +35,19 @@ namespace EYE
         has_setup_ = false;
       }
 
+      void set_same_geom(const bool same)
+      {
+        same_geom_ = same;
+      }
+
       uint32_t get_num_spm_level() const
       {
         return num_spm_level_;
+      }
+
+      bool get_same_geom() const
+      {
+        return same_geom_;
       }
 
       uint32_t get_total_num_blk() const
@@ -61,12 +71,11 @@ namespace EYE
       void MaxPooling(const float* const data, const uint32_t feat_dim,
                       const uint32_t num_data, const float* const pos,
                       shared_ptr<float>* const spm_code);
-
+      void build_cell_blk_map(const float* const pos, const uint32_t num_data);
      private:
       void init_with_default_parameter();
       uint32_t get_block_start_idx(const uint32_t level, const uint32_t yidx,
                                    const uint32_t xidx);
-      void build_cell_blk_map(const float* const pos, const uint32_t num_data);
 
      public:
 #define DEFAULT_SPM_LEVEL 3
@@ -93,6 +102,10 @@ namespace EYE
 
       map<uint32_t, vector<uint32_t> > map_cell_blk_;
       map<uint32_t, vector<uint32_t> > map_blk_cell_;
+
+      // to save time for map_cell_blk and map_blk_cell
+      bool same_geom_;
+      bool has_built_map_;
 
       bool has_setup_;
   };

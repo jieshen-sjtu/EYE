@@ -23,7 +23,9 @@ namespace EYE
         img_height_(0),
         finest_num_blk_(0),
         total_num_blk_(0),
-        has_setup_(false)
+        has_setup_(false),
+        same_geom_(true),
+        has_built_map_(false)
   {
     init_with_default_parameter();
   }
@@ -108,6 +110,9 @@ namespace EYE
 
   void SPM::build_cell_blk_map(const float* const pos, const uint32_t num_data)
   {
+    if (same_geom_ && has_built_map_)
+      return;
+
     map_blk_cell_.clear();
     map_cell_blk_.clear();
 
@@ -150,6 +155,8 @@ namespace EYE
 
       map_cell_blk_.insert(std::make_pair(i, blk_idx));
     }
+
+    has_built_map_ = true;
   }
 
   void SPM::MaxPooling(const float* const data, const uint32_t feat_dim,
